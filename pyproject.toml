@@ -1,0 +1,50 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ontoview"
+dynamic = ["version"]
+description = 'For interacting with medical ontologies in python'
+readme = "README.md"
+requires-python = ">=3.7"
+license = "MIT"
+keywords = []
+authors = [
+  { name = "Henry Watkins", email = "h.watkins@ucl.ac.uk" },
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.7",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = [
+  "numpy",
+  "scikit-learn",
+  "pandas",
+]
+
+[project.urls]
+Documentation = "https://github.com/high-dimensional/ontoview#readme"
+Issues = "https://github.com/high-dimensional/ontoview/issues"
+Source = "https://github.com/high-dimensional/ontoview"
+
+[tool.hatch.version]
+path = "src/ontoview/__about__.py"
+
+[tool.hatch.envs.default]
+dependencies = [
+  "coverage[toml]>=6.5",
+  "black",
+  "isort",
+  "pytest",
+]
+[tool.hatch.envs.default.scripts]
+test = "pytest {args:tests}"
+fmt = "black . ; isort . "
