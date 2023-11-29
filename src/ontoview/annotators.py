@@ -29,9 +29,9 @@ class OntologyAnnotator:
     to annotate clinical texts with codes from standard ontologies.
     """
 
-    def __init__(self):
+    def __init__(self, api_key):
         self.REST_URL = "http://data.bioontology.org"
-        self.API_KEY = "86e65bdb-db27-47d6-a063-9a4ab75f0f7f"
+        self.API_KEY = api_key
 
     def _get_json(self, url):
         opener = urllib.request.build_opener()

@@ -4,35 +4,28 @@ Only strings that are present in the corpus will be
 included in the final ontology, including ancestors.
 """
 
+import argparse
 import os
 import string
 
 import pandas as pd
-import plac
-from neuroNLP.ontology import CandidateGenerator, Ontology
 from tqdm import tqdm
 
+from ontoview.onto import CandidateGenerator, Ontology
 
-@plac.annotations(
-    input_ontology_dir=plac.Annotation(
-        "Path to the input ontology", "positional", None, str
-    ),
-    output_ontology=plac.Annotation("Name of output ontology", "positional", None, str),
-    data_path=plac.Annotation("Path to csv of text corpus", "positional", None, str),
-    n_max=plac.Annotation("Maximun number of text samples to use", "option", "n", int),
-)
-def main(input_ontology_dir, output_ontology, data_path, n_max=1000):
-    input_concepts = input_ontology_dir + "/ontology_concepts.csv"
-    intput_relations = input_ontology_dir + "/ontology_relations.csv"
+
+def main(args):
+    input_concepts = args.input_ontology_dir + "/ontology_concepts.csv"
+    intput_relations = args.input_ontology_dir + "/ontology_relations.csv"
     onto = Ontology(input_concepts, intput_relations)
 
-    text_corpus_df = pd.read_csv(data_path)
+    text_corpus_df = pd.read_csv(args.data_path)
     text_corpus = text_corpus_df.report_text.apply(str)
 
     concept_df = pd.read_csv(input_concepts)
     relations_df = pd.read_csv(intput_relations)
 
-    mega_string = " ".join(text_corpus.sample(n_max).to_list()).lower()
+    mega_string = " ".join(text_corpus.sample(args.n_max).to_list()).lower()
 
     noted_codes = []
     for idx, row in tqdm(concept_df.iterrows(), total=len(concept_df)):
@@ -60,13 +53,13 @@ def main(input_ontology_dir, output_ontology, data_path, n_max=1000):
     filtered_concepts = concept_df[concept_df.cui.isin(total_codes)]
     filtered_relations = relations_df[relations_df.sourceId.isin(filtered_concepts.cui)]
 
-    if os.path.isdir(output_ontology):
+    if os.path.isdir(args.output_ontology):
         raise ValueError("Ontology with that name already exists")
     else:
-        os.mkdir(output_ontology)
+        os.mkdir(args.output_ontology)
 
-    new_ontology_concepts = output_ontology + "/ontology_concepts.csv"
-    new_ontology_relations = output_ontology + "/ontology_relations.csv"
+    new_ontology_concepts = args.output_ontology + "/ontology_concepts.csv"
+    new_ontology_relations = args.output_ontology + "/ontology_relations.csv"
 
     filtered_concepts.to_csv(new_ontology_concepts, index=False)
     filtered_relations.to_csv(new_ontology_relations, index=False)
@@ -76,4 +69,18 @@ def main(input_ontology_dir, output_ontology, data_path, n_max=1000):
 
 
 if __name__ == "__main__":
-    plac.call(main)
+    parser = argparse.ArgumentParser(
+        description="Script to filter an ontology using a text corpus"
+    )
+    parser.add_argument("input_ontology_dir", help="Path to the input ontology")
+    parser.add_argument("output_ontology", help="Name of output ontology")
+    parser.add_argument("data_path", help="Path to csv of text corpus")
+    parser.add_argument(
+        "-n",
+        "--n_max",
+        type=int,
+        default=1000,
+        help="Maximum number of text samples to use",
+    )
+    args = parser.parse_args()
+    main(args)

@@ -5,29 +5,19 @@ build-backend = "hatchling.build"
 [project]
 name = "ontoview"
 dynamic = ["version"]
-description = 'For interacting with medical ontologies in python'
+description = 'A small set of utilities for interacting with medical ontologies in python'
 readme = "README.md"
 requires-python = ">=3.7"
-license = "MIT"
+license = {file = "LICENSE"}
 keywords = []
 authors = [
   { name = "Henry Watkins", email = "h.watkins@ucl.ac.uk" },
 ]
-classifiers = [
-  "Development Status :: 4 - Beta",
-  "Programming Language :: Python",
-  "Programming Language :: Python :: 3.7",
-  "Programming Language :: Python :: 3.8",
-  "Programming Language :: Python :: 3.9",
-  "Programming Language :: Python :: 3.10",
-  "Programming Language :: Python :: 3.11",
-  "Programming Language :: Python :: Implementation :: CPython",
-  "Programming Language :: Python :: Implementation :: PyPy",
-]
+classifiers = []
 dependencies = [
   "numpy",
-  "scikit-learn",
   "pandas",
+  "scipy",
 ]
 
 [project.urls]
@@ -40,7 +30,6 @@ path = "src/ontoview/__about__.py"
 
 [tool.hatch.envs.default]
 dependencies = [
-  "coverage[toml]>=6.5",
   "black",
   "isort",
   "pytest",

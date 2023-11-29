@@ -1,16 +1,3 @@
-"""Classes for supporting entity linking in the neuroNLP pipeline
-
-The task of entity linking is associating a mention in a text to
-an unambiguous concept from a standard ontology. Designed to be used
-as utilities alongside the EntityLinker, however the Ontology can
-be used separately as an interface to an ontology. These methods are
-inspired by the scispacy linking method (https://allenai.github.io/scispacy/).
-
-Classes:
-    * Concept
-    * Ontology
-    * CandidateGenerator
-"""
 import numpy as np
 import pandas as pd
 from scipy.stats import zscore

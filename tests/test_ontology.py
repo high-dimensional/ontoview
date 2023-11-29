@@ -1,7 +1,7 @@
 import pytest
-from neuroNLP.ontology import CandidateGenerator, Concept, Ontology
 
-model_dir = "/home/hwatkins/Desktop/neuroNLP/models"
+from ontoview.onto import CandidateGenerator, Concept, Ontology
+
 concepts = model_dir + "/qs_linker_model/ontology_concepts.csv"
 relations = model_dir + "/qs_linker_model/ontology_relations.csv"
 onto = Ontology(concepts, relations)
